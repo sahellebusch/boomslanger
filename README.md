@@ -1,8 +1,5 @@
-<p align="center">
-  <img width="300" height="300" src="./logo.png">
-</p>
 
-# Boomslinger
+# 💥  Boomslinger 💥
 
 Boomslinger is a simple to use, freeform object data injector designed to make data setup easy for database level testing. You provide the object, boomslinger will insert it. Boomslinger will also truncate tables for you so you always have a clean slate to work with if you want to.
 
