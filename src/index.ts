@@ -2,16 +2,16 @@ import { camelizeKeys, decamelize } from 'humps';
 import isPlainObject from 'lodash.isplainobject';
 import Pgp, { IDatabase, IMain, Column } from 'pg-promise';
 
-interface BoomslangerOpts {
+interface BoomslingerOpts {
   postgresUrl: string;
   debug?: boolean;
 }
 
-export default class Boomslanger {
+export default class Boomslinger {
   private pgp: IMain<{}>;
   private connection: IDatabase<{}>;
 
-  constructor(opts: BoomslangerOpts) {
+  constructor(opts: BoomslingerOpts) {
     const pgpOpts: any = {
       capSQL: true,
     };
@@ -29,7 +29,7 @@ export default class Boomslanger {
   }
 
   async injectOne<T = Record<any, any>>(table: string, data: T): Promise<T> {
-    const columns = this.getColumns(Array.isArray(data) ? data[0] : data);
+    const columns = this.getColumns(data);
     const columnSet = new this.pgp.helpers.ColumnSet(columns, {
       table: decamelize(table),
     });
@@ -47,7 +47,7 @@ export default class Boomslanger {
     table: string,
     data: T[]
   ): Promise<T[]> {
-    const columns = this.getColumns(Array.isArray(data) ? data[0] : data);
+    const columns = this.getColumns(data[0]);
     const columnSet = new this.pgp.helpers.ColumnSet(columns, {
       table: decamelize(table),
     });

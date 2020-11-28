@@ -1,4 +1,4 @@
-import Boomslanger from './index';
+import Boomslinger from './index';
 import Pgp from 'pg-promise';
 
 const pgp = Pgp();
@@ -14,8 +14,8 @@ interface Film {
   meta: Record<any, any>;
 }
 
-describe('Boomslanger', () => {
-  const subject = new Boomslanger({ postgresUrl });
+describe('Boomslinger', () => {
+  const subject = new Boomslinger({ postgresUrl });
 
   afterEach(async () => {
     await testConnection.none('TRUNCATE films RESTART IDENTITY');
