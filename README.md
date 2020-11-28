@@ -13,7 +13,7 @@ If you'd like to contribute, please follow the [guidelines](CONTRIBUTING.md).
 
 ## Usage
 
-Take a look at [the tests](./index.spec.ts), it's easy - not hard.
+Take a look at [the tests](./src/index.spec.ts), it's easy - not hard.
 
 ## Developing
 

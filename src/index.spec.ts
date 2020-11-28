@@ -29,7 +29,7 @@ describe('Boomslinger', () => {
   describe('#injectOne', () => {
     it('injects an object', async () => {
       const testFilm: Partial<Film> = {
-        title: 'Slangin the booms',
+        title: 'Slingin the booms',
         dateProd: new Date(),
         len: 123,
         meta: { thisMovie: 'is awesome' },
@@ -37,6 +37,8 @@ describe('Boomslinger', () => {
 
       const result = await subject.injectOne<Partial<Film>>('films', testFilm);
       expect(result).toEqual({ ...testFilm, id: 1 });
+      const count = await testConnection.one('SELECT COUNT(id) from films');
+      expect(count).toEqual({ count: '1' });
     });
   });
 
@@ -44,7 +46,7 @@ describe('Boomslinger', () => {
     it('injects an array of objects', async () => {
       const testFilms: Partial<Film>[] = [
         {
-          title: 'Slangin the booms',
+          title: 'Slingin the booms',
           dateProd: new Date(),
           len: 123,
           meta: { thisMovie: 'is awesome' },
@@ -64,13 +66,15 @@ describe('Boomslinger', () => {
       result.forEach((film, index) => {
         expect(film).toEqual({ ...film, id: index + 1 });
       });
+      const count = await testConnection.one('SELECT COUNT(id) from films');
+      expect(count).toEqual({ count: '2' });
     });
   });
 
   describe('#truncateTable', () => {
     it('truncates a table', async () => {
       const testFilm: Partial<Film> = {
-        title: 'Slangin the booms',
+        title: 'Slingin the booms',
         dateProd: new Date(),
         len: 123,
         meta: { thisMovie: 'is awesome' },
