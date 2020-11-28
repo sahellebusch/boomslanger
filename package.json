@@ -1,57 +1,84 @@
 {
-  "version": "0.1.1",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "engines": {
-    "node": ">=10"
+  "name": "boomslinger",
+  "description": "Easy to use postgres data injector library that works with any POJO.",
+  "version": "0.1.0",
+  "author": "Sean hellebusch <sahellebusch@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/sahellebusch/boomslinger/issues",
+    "email": "sahellebusch@gmail.com"
   },
-  "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
-    "release": "np",
-    "size": "size-limit",
-    "analyze": "size-limit --why"
+  "dependencies": {
+    "humps": "^2.0.1",
+    "lodash.isplainobject": "^4.0.6",
+    "pg-promise": "^10.8.0"
   },
-  "peerDependencies": {},
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
-  "name": "boomslanger",
-  "author": "=",
-  "module": "dist/boomslanger.esm.js",
-  "size-limit": [
-    {
-      "path": "dist/boomslanger.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/boomslanger.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.9.0",
+    "@types/humps": "^2.0.0",
+    "@types/lodash.isplainobject": "^4.0.6",
     "husky": "^4.3.0",
     "np": "^7.0.0",
     "size-limit": "^4.9.0",
     "tsdx": "^0.14.1",
     "tslib": "^2.0.3",
     "typescript": "^4.1.2"
-  }
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/sahellebusch/boomslinger#README",
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "keywords": [
+    "database",
+    "injector",
+    "pg",
+    "postgres",
+    "testing"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/boomslinger.esm.js",
+  "peerDependencies": {},
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sahellebusch/boomslinger"
+  },
+  "scripts": {
+    "analyze": "size-limit --why",
+    "build": "tsdx build",
+    "lint": "tsdx lint",
+    "lint:fix": "tsdx lint --fix",
+    "prepare": "tsdx build",
+    "pretest": "docker-compose up -d",
+    "release": "np",
+    "size": "size-limit",
+    "start": "tsdx watch",
+    "test": "tsdx test",
+    "test:watch": "tsdx test --watch"
+  },
+  "size-limit": [
+    {
+      "path": "dist/boomslinger.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/boomslinger.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "typings": "dist/index.d.ts"
 }
