@@ -1,7 +1,7 @@
 {
   "name": "boomslinger",
   "description": "Easy to use postgres data injector library that works with any POJO.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Sean hellebusch <sahellebusch@gmail.com>",
   "bugs": {
     "url": "https://github.com/sahellebusch/boomslinger/issues",
