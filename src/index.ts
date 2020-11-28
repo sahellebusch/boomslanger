@@ -3,10 +3,22 @@ import isPlainObject from 'lodash.isplainobject';
 import Pgp, { IDatabase, IMain, Column } from 'pg-promise';
 
 interface BoomslingerOpts {
+  /**
+   * Database connection string.
+   */
   postgresUrl: string;
+
+  /**
+   * Prints all SQL statements for easier debugging.
+   */
   debug?: boolean;
 }
 
+/**
+ * Boomslinger.
+ *
+ * @constructor
+ */
 export default class Boomslinger {
   private pgp: IMain<{}>;
   private connection: IDatabase<{}>;
@@ -24,10 +36,19 @@ export default class Boomslinger {
     this.connection = this.pgp(opts.postgresUrl);
   }
 
+  /**
+   * Closes the connection.
+   */
   close(): void {
     this.pgp.end();
   }
 
+  /**
+   * Injects a single object into the database.
+   *
+   * @param table - table name to insert the object
+   * @param data  - the object to be inserted
+   */
   async injectOne<T = Record<any, any>>(table: string, data: T): Promise<T> {
     const columns = this.getColumns(data);
     const columnSet = new this.pgp.helpers.ColumnSet(columns, {
@@ -43,6 +64,12 @@ export default class Boomslinger {
     return <T>(<unknown>camelizeKeys(insertResult[0]));
   }
 
+  /**
+   * Injects many of the same object into the database.
+   *
+   * @param table - table name to insert the object
+   * @param data  - the array of objects to be inserted
+   */
   async injectMany<T = Record<any, any>>(
     table: string,
     data: T[]
@@ -61,10 +88,16 @@ export default class Boomslinger {
     return insertResult.map<T>(item => <T>(<unknown>camelizeKeys(item)));
   }
 
+  /**
+   * Truncates a table and restarts identity.
+   */
   async truncateTable(table: string): Promise<void> {
     await this.connection.none(`TRUNCATE ${table} RESTART IDENTITY CASCADE`);
   }
 
+  /**
+   * @internal
+   */
   private getColumns(sample: Record<any, any>): Column[] {
     return Object.keys(sample).map<Column>(key => {
       const config = {

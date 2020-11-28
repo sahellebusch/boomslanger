@@ -1,7 +1,12 @@
 {
   "name": "boomslinger",
-  "version": "0.1.1",
-  "author": "=",
+  "description": "Easy to use postgres data injector library that works with any POJO.",
+  "version": "0.1.0",
+  "author": "Sean hellebusch <sahellebusch@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/sahellebusch/boomslinger/issues",
+    "email": "sahellebusch@gmail.com"
+  },
   "dependencies": {
     "humps": "^2.0.1",
     "lodash.isplainobject": "^4.0.6",
@@ -25,11 +30,19 @@
     "dist",
     "src"
   ],
+  "homepage": "https://github.com/sahellebusch/boomslinger#README",
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
     }
   },
+  "keywords": [
+    "database",
+    "injector",
+    "pg",
+    "postgres",
+    "testing"
+  ],
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/boomslinger.esm.js",
@@ -40,16 +53,22 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sahellebusch/boomslinger"
+  },
   "scripts": {
     "analyze": "size-limit --why",
     "build": "tsdx build",
-    "lint": "tsdx lint --fix",
+    "lint": "tsdx lint",
+    "lint:fix": "tsdx lint --fix",
     "prepare": "tsdx build",
     "pretest": "docker-compose up -d",
     "release": "np",
     "size": "size-limit",
     "start": "tsdx watch",
-    "test": "tsdx test"
+    "test": "tsdx test",
+    "test:watch": "tsdx test --watch"
   },
   "size-limit": [
     {
