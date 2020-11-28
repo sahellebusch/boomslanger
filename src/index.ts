@@ -20,8 +20,8 @@ interface BoomslingerOpts {
  * @constructor
  */
 export default class Boomslinger {
-  private pgp: IMain<{}>;
-  private connection: IDatabase<{}>;
+  private readonly pgp: IMain<{}>;
+  private readonly connection: IDatabase<{}>;
 
   constructor(opts: BoomslingerOpts) {
     const pgpOpts: any = {
