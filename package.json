@@ -10,12 +10,14 @@
   "dependencies": {
     "humps": "^2.0.1",
     "lodash.isplainobject": "^4.0.6",
-    "pg-promise": "^10.8.0"
+    "pg-promise": "^10.8.0",
+    "uuid-validate": "0.0.3"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.9.0",
     "@types/humps": "^2.0.0",
     "@types/lodash.isplainobject": "^4.0.6",
+    "@types/uuid-validate": "0.0.1",
     "husky": "^4.3.0",
     "np": "^7.0.0",
     "size-limit": "^4.9.0",
