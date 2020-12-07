@@ -1,6 +1,7 @@
-import { camelizeKeys, decamelize } from 'humps';
+import { camelizeKeys, decamelize, decamelizeKeys } from 'humps';
 import isPlainObject from 'lodash.isplainobject';
 import Pgp, { IDatabase, IMain, Column } from 'pg-promise';
+import uuidValidate from 'uuid-validate';
 
 interface BoomslingerOpts {
   /**
@@ -86,6 +87,31 @@ export default class Boomslinger {
 
     const insertResult = await this.connection.any(sql); // XPromise is of type Promise in pg-promise
     return insertResult.map<T>(item => <T>(<unknown>camelizeKeys(item)));
+  }
+
+  async findOne<T = Record<any, any>>(
+    table: string,
+    data: Partial<T>
+  ): Promise<T> {
+    const wheres = Object.entries(decamelizeKeys(data)).map(
+      ([field, value]) => {
+        let where = `WHERE ${field} = `;
+
+        if (typeof value === 'number') {
+          return where + value;
+        }
+
+        if (uuidValidate(value)) {
+          return where + `'${value}'::uuid`;
+        }
+
+        return where + `'${value}'`;
+      }
+    );
+
+    const sql = `SELECT * FROM ${decamelize(table)} ${wheres.join(' ')}`;
+    const res = await this.connection.one(sql);
+    return <T>(<unknown>camelizeKeys(res));
   }
 
   /**
