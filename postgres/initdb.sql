@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE motion_pictures (  -- random name to test camelization
+CREATE TABLE motion_pictures (
     uuid        uuid DEFAULT uuid_generate_v4 (),
     id          serial PRIMARY KEY,
     title       varchar(40) NOT NULL,
