@@ -6,7 +6,7 @@ const postgresUrl =
   'postgres://test_user:test_password@localhost:65432/test_db';
 const testConnection = pgp(postgresUrl);
 
-interface Film {
+interface MotionPicture {
   uuid: string;
   id: number;
   title: string;
@@ -19,7 +19,7 @@ describe('Boomslinger', () => {
   const subject = new Boomslinger({ postgresUrl });
 
   afterEach(async () => {
-    await testConnection.none('TRUNCATE films RESTART IDENTITY');
+    await testConnection.none('TRUNCATE motion_pictures RESTART IDENTITY');
   });
 
   afterAll(() => {
@@ -29,23 +29,32 @@ describe('Boomslinger', () => {
 
   describe('#injectOne', () => {
     it('injects an object', async () => {
-      const testFilm: Partial<Film> = {
+      const testMotionPicture: Partial<MotionPicture> = {
         title: 'Slingin the booms',
         dateProd: new Date(),
         len: 123,
         meta: { thisMovie: 'is awesome' },
       };
 
-      const result = await subject.injectOne<Partial<Film>>('films', testFilm);
-      expect(result).toEqual({ ...testFilm, id: 1, uuid: expect.any(String) });
-      const count = await testConnection.one('SELECT COUNT(id) from films');
+      const result = await subject.injectOne<Partial<MotionPicture>>(
+        'motionPictures',
+        testMotionPicture
+      );
+      expect(result).toEqual({
+        ...testMotionPicture,
+        id: 1,
+        uuid: expect.any(String),
+      });
+      const count = await testConnection.one(
+        'SELECT COUNT(id) from motion_pictures'
+      );
       expect(count).toEqual({ count: '1' });
     });
   });
 
   describe('#injectMany', () => {
     it('injects an array of objects', async () => {
-      const testFilms: Partial<Film>[] = [
+      const testMotionPictures: Partial<MotionPicture>[] = [
         {
           title: 'Slingin the booms',
           dateProd: new Date(),
@@ -60,39 +69,46 @@ describe('Boomslinger', () => {
         },
       ];
 
-      const result = await subject.injectMany<Partial<Film>>(
-        'films',
-        testFilms
+      const result = await subject.injectMany<Partial<MotionPicture>>(
+        'motionPictures',
+        testMotionPictures
       );
-      result.forEach((film, index) => {
-        expect(film).toEqual({ ...film, id: index + 1 });
+      result.forEach((mp, index) => {
+        expect(mp).toEqual({ ...mp, id: index + 1 });
       });
-      const count = await testConnection.one('SELECT COUNT(id) from films');
+      const count = await testConnection.one(
+        'SELECT COUNT(id) from motion_pictures'
+      );
       expect(count).toEqual({ count: '2' });
     });
   });
 
   describe('#truncateTable', () => {
     it('truncates a table', async () => {
-      const testFilm: Partial<Film> = {
+      const testMotionPicture: Partial<MotionPicture> = {
         title: 'Slingin the booms',
         dateProd: new Date(),
         len: 123,
         meta: { thisMovie: 'is awesome' },
       };
 
-      await subject.injectOne<Partial<Film>>('films', testFilm);
-      await subject.truncateTable('films');
-      const count = await testConnection.one('SELECT COUNT(id) from films');
+      await subject.injectOne<Partial<MotionPicture>>(
+        'motionPictures',
+        testMotionPicture
+      );
+      await subject.truncateTable('motionPictures');
+      const count = await testConnection.one(
+        'SELECT COUNT(id) from motion_pictures'
+      );
       expect(count).toEqual({ count: '0' });
     });
   });
 
   describe('#findOne', () => {
-    let filmsInDb: Partial<Film>[];
+    let motionPicturesInDb: Partial<MotionPicture>[];
 
     beforeEach(async () => {
-      const testFilms: Partial<Film>[] = [
+      const testMotionPictures: Partial<MotionPicture>[] = [
         {
           title: 'Slingin the booms',
           dateProd: new Date(),
@@ -107,21 +123,24 @@ describe('Boomslinger', () => {
         },
       ];
 
-      filmsInDb = await subject.injectMany<Partial<Film>>('films', testFilms);
+      motionPicturesInDb = await subject.injectMany<Partial<MotionPicture>>(
+        'motionPictures',
+        testMotionPictures
+      );
     });
 
     it('will return one object when exists in the database', async () => {
-      const res = await subject.findOne<Film>('films', {
+      const res = await subject.findOne<MotionPicture>('motionPictures', {
         title: 'Slingin the booms',
       });
-      expect(res).toEqual(filmsInDb[0]);
+      expect(res).toEqual(motionPicturesInDb[0]);
     });
 
     it('can find one with uuid type', async () => {
-      const res = await subject.findOne<Film>('films', {
-        uuid: filmsInDb[0].uuid,
+      const res = await subject.findOne<MotionPicture>('motionPictures', {
+        uuid: motionPicturesInDb[0].uuid,
       });
-      expect(res).toEqual(filmsInDb[0]);
+      expect(res).toEqual(motionPicturesInDb[0]);
     });
   });
 });

@@ -118,7 +118,9 @@ export default class Boomslinger {
    * Truncates a table and restarts identity.
    */
   async truncateTable(table: string): Promise<void> {
-    await this.connection.none(`TRUNCATE ${table} RESTART IDENTITY CASCADE`);
+    await this.connection.none(
+      `TRUNCATE ${decamelize(table)} RESTART IDENTITY CASCADE`
+    );
   }
 
   /**
